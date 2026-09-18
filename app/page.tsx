@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import RegionSearch from "./components/region-search";
 import Booking from "./components/booking";
 import { Aircon, Icon } from "./components/icons";
 const services = [
@@ -306,6 +308,9 @@ export default function Home() {
             </p>
           </div>
         </section>
+        <section className="container section">
+          <RegionSearch />
+        </section>
         <section id="faq" className="section container faq-section">
           <div>
             <span className="section-kicker">GOOD TO KNOW</span>
@@ -323,7 +328,7 @@ export default function Home() {
               ],
               [
                 "예약하면 바로 방문 일정이 확정되나요?",
-                "희망 날짜를 남겨주시면 방문 가능 여부를 확인하고 일정을 조율하는 방식입니다. 현재 사이트는 사전 공개 화면으로, 입력한 예약 정보는 전송되지 않습니다.",
+                "희망 날짜를 남겨주시면 방문 가능 여부를 확인하고 일정을 조율하는 방식입니다. 온라인 신청은 접수 대기 상태로 저장되며, 담당자가 연락해 비용과 일정을 확인한 뒤 확정합니다.",
               ],
               [
                 "청소 전에 미리 준비할 것이 있나요?",
@@ -355,6 +360,10 @@ export default function Home() {
         </section>
       </main>
       <footer className="footer container">
+        <div className="footer-links">
+          <Link href="/aircon-cleaning">지역별 에어컨 청소</Link>
+          <Link href="/privacy">개인정보 처리 안내</Link>
+        </div>
         <div className="footer-top">
           <a className="brand" href="#">
             <span className="brand-symbol">
@@ -371,9 +380,7 @@ export default function Home() {
           <p>
             서울 남서권 · 경기 남부권 에어컨 청소
             <br />
-            <span>
-              서비스 오픈 준비 중 · 예약 신청은 현재 미리보기로 제공됩니다.
-            </span>
+            <span>온라인 예약 접수 · 방문 일정은 상담 후 확정됩니다.</span>
           </p>
           <span>
             © {new Date().getFullYear()} 맑은바람. All rights reserved.

@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  outputFileTracingIncludes: { "/*": ["./certs/supabase-ca.crt"] },
 };
 
 export default nextConfig;
