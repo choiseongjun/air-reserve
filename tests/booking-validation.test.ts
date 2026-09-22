@@ -5,6 +5,7 @@ import { validateBooking, seoulDate } from "../lib/booking-validation";
 const now = new Date("2026-09-18T16:00:00Z");
 const sample = () => ({
   requestId: randomUUID(),
+  jobType: "청소",
   service: "벽걸이 에어컨",
   area: "동작구",
   date: "2026-09-20",
@@ -40,6 +41,7 @@ test("requires explicit consent, valid enums, and bounded fields", () => {
     { quantity: 5 },
     { area: "부산" },
     { service: "설치" },
+    { jobType: "이사" },
     { phone: "abc" },
     { notes: "x".repeat(1001) },
     { address: "" },
@@ -47,6 +49,10 @@ test("requires explicit consent, valid enums, and bounded fields", () => {
     { requestId: "not-a-uuid" },
   ])
     assert.throws(() => validateBooking({ ...sample(), ...change }, now));
+});
+test("accepts installation job type", () => {
+  const value = validateBooking({ ...sample(), jobType: "설치" }, now);
+  assert.equal(value.jobType, "설치");
 });
 test("rejects malformed body", () => {
   for (const value of [null, [], "text", {}, 42])

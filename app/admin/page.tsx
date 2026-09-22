@@ -31,7 +31,7 @@ export default async function Admin({
   try {
     rows = (
       await getPool().query(
-        "SELECT id,customer_name,phone,address,service,area,to_char(preferred_date,'YYYY-MM-DD') AS preferred_date,time_slot,quantity,notes,status,created_at FROM air_reserve.bookings ORDER BY created_at DESC LIMIT 21 OFFSET $1",
+        "SELECT id,customer_name,phone,address,job_type,service,area,to_char(preferred_date,'YYYY-MM-DD') AS preferred_date,time_slot,quantity,notes,status,created_at FROM air_reserve.bookings ORDER BY created_at DESC LIMIT 21 OFFSET $1",
         [(page - 1) * 20],
       )
     ).rows;
@@ -64,7 +64,7 @@ export default async function Admin({
           <article key={row.id}>
             <div className="admin-booking-heading">
               <h2>
-                {row.customer_name} · {row.area}
+                {row.job_type} · {row.customer_name} · {row.area}
               </h2>
               <BookingStatus id={row.id} status={row.status} />
             </div>

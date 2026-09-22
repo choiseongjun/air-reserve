@@ -6,6 +6,7 @@ export const services = [
   "2in1 에어컨",
   "종류를 잘 모르겠어요",
 ];
+export const jobTypes = ["청소", "설치"];
 export const timeSlots = ["시간 협의 가능", "오전 (9–12시)", "오후 (12–18시)"];
 export const consentVersion = "2026-09-18";
 export function seoulDate(now = new Date()) {
@@ -18,6 +19,7 @@ export function seoulDate(now = new Date()) {
 }
 export type BookingInput = {
   requestId: string;
+  jobType: string;
   service: string;
   area: string;
   date: string;
@@ -54,9 +56,12 @@ export function validateBooking(
     )
   )
     throw new Error("예약 화면을 새로 열어 주세요.");
-  const service = text("service", 1, 40),
+  const jobType = text("jobType", 1, 10),
+    service = text("service", 1, 40),
     area = text("area", 1, 40),
     date = text("date", 10, 10);
+  if (!jobTypes.includes(jobType))
+    throw new Error("작업 종류를 확인해 주세요.");
   if (
     !services.includes(service) ||
     ![...regions.map((r) => r.name), "기타 지역 (상담 필요)"].includes(area)
@@ -80,7 +85,7 @@ export function validateBooking(
     Number(v.quantity) < 1 ||
     Number(v.quantity) > 4
   )
-    throw new Error("청소 대수를 선택해 주세요.");
+    throw new Error("작업 대수를 선택해 주세요.");
   const timeSlot = text("timeSlot", 1, 40);
   if (!timeSlots.includes(timeSlot))
     throw new Error("희망 시간대를 확인해 주세요.");
@@ -89,6 +94,7 @@ export function validateBooking(
   if (v.website) throw new Error("정상적인 예약 요청이 아닙니다.");
   return {
     requestId,
+    jobType,
     service,
     area,
     date,

@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS air_reserve.bookings (
  phone text NOT NULL,
  phone_hash text NOT NULL,
  address text NOT NULL,
+ job_type text NOT NULL DEFAULT '청소' CHECK (job_type IN ('청소','설치')),
  service text NOT NULL,
  area text NOT NULL,
  preferred_date date NOT NULL,
@@ -20,6 +21,9 @@ CREATE TABLE IF NOT EXISTS air_reserve.bookings (
  created_at timestamptz NOT NULL DEFAULT now(),
  updated_at timestamptz NOT NULL DEFAULT now()
 );
+ALTER TABLE air_reserve.bookings ADD COLUMN IF NOT EXISTS job_type text NOT NULL DEFAULT '청소';
+ALTER TABLE air_reserve.bookings DROP CONSTRAINT IF EXISTS bookings_job_type_check;
+ALTER TABLE air_reserve.bookings ADD CONSTRAINT bookings_job_type_check CHECK (job_type IN ('청소','설치'));
 CREATE INDEX IF NOT EXISTS bookings_created_idx ON air_reserve.bookings(created_at DESC);
 CREATE INDEX IF NOT EXISTS bookings_phone_idx ON air_reserve.bookings(phone_hash, created_at DESC);
 ALTER TABLE air_reserve.bookings ENABLE ROW LEVEL SECURITY;

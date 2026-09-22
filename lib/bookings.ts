@@ -46,7 +46,7 @@ export async function createBooking(input: BookingInput) {
       );
     const id = randomUUID();
     await client.query(
-      "INSERT INTO air_reserve.bookings (id,request_id,payload_hash,customer_name,phone,phone_hash,address,service,area,preferred_date,time_slot,quantity,notes,consent_version) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
+      "INSERT INTO air_reserve.bookings (id,request_id,payload_hash,customer_name,phone,phone_hash,address,job_type,service,area,preferred_date,time_slot,quantity,notes,consent_version) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
       [
         id,
         input.requestId,
@@ -55,6 +55,7 @@ export async function createBooking(input: BookingInput) {
         input.phone,
         phoneHash,
         input.address,
+        input.jobType,
         input.service,
         input.area,
         input.date,

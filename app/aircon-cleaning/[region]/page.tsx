@@ -16,8 +16,8 @@ export async function generateMetadata({
   const region = getRegion((await params).region);
   if (!region) notFound();
   return pageMetadata(
-    `${region.name} 에어컨 청소 · ${region.neighborhoods.slice(0, 3).join("·")} | 맑은바람`,
-    `${region.intro} 벽걸이·스탠드·시스템 청소 예약 상담, 방문 준비 사항과 비용 기준을 확인하세요.`,
+    `${region.name} 에어컨 청소·설치 · ${region.neighborhoods.slice(0, 3).join("·")} | 맑은바람`,
+    `${region.intro} 벽걸이·스탠드·시스템 청소와 신규 설치 예약 상담, 방문 준비 사항과 비용 기준을 확인하세요.`,
     `/aircon-cleaning/${region.slug}`,
   );
 }
@@ -45,13 +45,25 @@ export default async function RegionPage({
         },
       },
       {
+        "@type": "Service",
+        name: `${region.name} 에어컨 설치`,
+        serviceType: "에어컨 설치",
+        description: `${region.name}에서 벽걸이·스탠드·시스템 에어컨 신규 설치를 상담합니다.`,
+        url: `${siteUrl}${path}`,
+        provider: { "@type": "Organization", name: "맑은바람", url: siteUrl },
+        areaServed: {
+          "@type": "AdministrativeArea",
+          name: `${region.province} ${region.name}`,
+        },
+      },
+      {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "홈", item: siteUrl },
           {
             "@type": "ListItem",
             position: 2,
-            name: "에어컨 청소 지역",
+            name: "에어컨 청소·설치 지역",
             item: `${siteUrl}/aircon-cleaning`,
           },
           {
@@ -78,7 +90,7 @@ export default async function RegionPage({
           <nav className="breadcrumbs" aria-label="현재 위치">
             <Link href="/">홈</Link>
             <span>/</span>
-            <Link href="/aircon-cleaning">에어컨 청소</Link>
+            <Link href="/aircon-cleaning">에어컨 청소·설치</Link>
             <span>/</span>
             <span>{region.name}</span>
           </nav>
@@ -88,12 +100,12 @@ export default async function RegionPage({
           <h1>
             {region.name}
             <br />
-            <span>에어컨 청소</span>
+            <span>에어컨 청소·설치</span>
           </h1>
           <h2>{region.headline}</h2>
           <p>{region.intro}</p>
           <a href="#reservation" className="button">
-            {region.name} 청소 예약 상담 →
+            {region.name} 청소·설치 예약 상담 →
           </a>
         </section>
         <section className="container area-section region-coverage">
@@ -128,8 +140,39 @@ export default async function RegionPage({
             ))}
           </div>
         </section>
+        <section className="container section region-install">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">NEW INSTALLATION</span>
+              <h2>{region.name} 에어컨 설치도 함께 상담합니다</h2>
+              <p>
+                신규 구매나 이전 설치 모두 현장 조건을 확인한 뒤 진행합니다.
+              </p>
+            </div>
+          </div>
+          <div className="region-tips">
+            <article>
+              <span>01</span>
+              <p>실외기 설치 위치와 배관이 지나갈 경로를 확인해 주세요.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <p>
+                신축이나 인테리어 공사 중이라면 전기 용량과 배수 경로를 함께
+                알려주세요.
+              </p>
+            </article>
+            <article>
+              <span>03</span>
+              <p>
+                기존 제품을 철거하고 이전 설치가 필요한 경우 철거 여부도 남겨
+                주세요.
+              </p>
+            </article>
+          </div>
+        </section>
         <section className="container regional-pricing">
-          <h2>기종별 비용과 작업시간 안내</h2>
+          <h2>{region.name} 청소·설치 비용과 작업시간 안내</h2>
           <p>
             아래는 1대 기준 예상 시간입니다. 실제 소요 시간과 요금은
             모델·오염도·설치 환경을 확인한 후 안내합니다.
@@ -138,6 +181,7 @@ export default async function RegionPage({
             <table>
               <thead>
                 <tr>
+                  <th>구분</th>
                   <th>기종</th>
                   <th>예상 시간</th>
                   <th>확인할 정보</th>
@@ -146,21 +190,45 @@ export default async function RegionPage({
               </thead>
               <tbody>
                 <tr>
+                  <td>청소</td>
                   <td>벽걸이</td>
                   <td>1–1.5시간</td>
                   <td>설치 높이·주변 공간</td>
                   <td>상담 후 안내</td>
                 </tr>
                 <tr>
+                  <td>청소</td>
                   <td>스탠드</td>
                   <td>1.5–2시간</td>
                   <td>모델·분해 범위</td>
                   <td>상담 후 안내</td>
                 </tr>
                 <tr>
+                  <td>청소</td>
                   <td>시스템</td>
                   <td>1.5–2.5시간</td>
                   <td>천장 높이·실내기 대수</td>
+                  <td>상담 후 안내</td>
+                </tr>
+                <tr>
+                  <td>설치</td>
+                  <td>벽걸이</td>
+                  <td>1.5–2시간</td>
+                  <td>배관 길이·실외기 위치</td>
+                  <td>상담 후 안내</td>
+                </tr>
+                <tr>
+                  <td>설치</td>
+                  <td>스탠드</td>
+                  <td>2–3시간</td>
+                  <td>전기 용량·배수 경로</td>
+                  <td>상담 후 안내</td>
+                </tr>
+                <tr>
+                  <td>설치</td>
+                  <td>시스템</td>
+                  <td>3시간~</td>
+                  <td>천장 구조·실내기 대수</td>
                   <td>상담 후 안내</td>
                 </tr>
               </tbody>
@@ -173,7 +241,7 @@ export default async function RegionPage({
         </section>
         <section className="container section">
           <span className="section-kicker">LOCAL QUESTIONS</span>
-          <h2>{region.name} 청소 상담 FAQ</h2>
+          <h2>{region.name} 청소·설치 상담 FAQ</h2>
           <div className="faq-list region-faq">
             <details open>
               <summary>
@@ -181,6 +249,17 @@ export default async function RegionPage({
                 <span>+</span>
               </summary>
               <p>{region.answer}</p>
+            </details>
+            <details>
+              <summary>
+                {region.name}에서 에어컨 설치도 신청할 수 있나요?
+                <span>+</span>
+              </summary>
+              <p>
+                네, 벽걸이·스탠드·시스템 에어컨 신규 설치도 상담합니다. 예약
+                시 작업 종류에서 설치를 선택해 주시면 배관 길이, 실외기 위치,
+                전기 용량을 확인한 뒤 비용과 일정을 안내합니다.
+              </p>
             </details>
             <details>
               <summary>
@@ -209,10 +288,13 @@ export default async function RegionPage({
           <h2>인근 지역도 살펴보세요</h2>
           <div className="related-regions">
             {regions
-              .filter((r) => r.slug !== region.slug)
+              .filter(
+                (r) => r.slug !== region.slug && r.province === region.province,
+              )
+              .slice(0, 12)
               .map((r) => (
                 <Link key={r.slug} href={`/aircon-cleaning/${r.slug}`}>
-                  {r.name} 에어컨 청소 ↗
+                  {r.name} 에어컨 청소·설치 ↗
                 </Link>
               ))}
           </div>

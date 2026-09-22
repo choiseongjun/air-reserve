@@ -3,6 +3,7 @@ import Link from "next/link";
 import RegionSearch from "./components/region-search";
 import Booking from "./components/booking";
 import { Aircon, Icon } from "./components/icons";
+import { regions } from "@/lib/regions";
 const services = [
   {
     name: "벽걸이 에어컨",
@@ -29,13 +30,39 @@ const services = [
     tag: "가정용 · 상업용",
   },
 ] as const;
+const installServices = [
+  {
+    name: "벽걸이 에어컨",
+    type: "wall",
+    label: "신규 구매·인테리어 공사 후 설치",
+    description: "배관 길이와 실외기 위치를 확인해 안전하게 설치합니다",
+    time: "약 1.5–2시간",
+    tag: "설치",
+  },
+  {
+    name: "스탠드 에어컨",
+    type: "standing",
+    label: "거실이나 넓은 공간에",
+    description: "전기 용량과 설치 위치를 확인한 뒤 배관·배수를 연결합니다",
+    time: "약 2–3시간",
+    tag: "설치",
+  },
+  {
+    name: "시스템 에어컨",
+    type: "ceiling",
+    label: "매장·사무실 등 여러 대 설치도",
+    description: "천장 구조와 실내기 대수를 확인해 배관·전기 작업을 진행합니다",
+    time: "약 3시간~ (대수별 상이)",
+    tag: "설치",
+  },
+] as const;
 export default function Home() {
   return (
     <>
       <div className="announcement">
-        <span className="status-dot" /> 동작구에서 시작하는, 우리 동네 에어컨
-        케어 <span className="announcement-divider">|</span>
-        <span className="announcement-extra">서울 남서권 · 경기 남부권</span>
+        <span className="status-dot" /> 서울 전역과 경기 전역, 우리 동네
+        에어컨 케어 <span className="announcement-divider">|</span>
+        <span className="announcement-extra">서울 전체 · 경기 전체</span>
       </div>
       <header className="header">
         <div className="container header-inner">
@@ -46,7 +73,8 @@ export default function Home() {
             맑은바람<span className="brand-en">CLEAR AIR</span>
           </a>
           <nav aria-label="주 메뉴">
-            <a href="#services">서비스 안내</a>
+            <a href="#services">청소 안내</a>
+            <a href="#installation">설치 안내</a>
             <a href="#process">청소 과정</a>
             <a href="#areas">방문 가능 지역</a>
             <a href="#faq">자주 묻는 질문</a>
@@ -70,11 +98,11 @@ export default function Home() {
             <p className="hero-description">
               매일 숨 쉬는 공간이니까.
               <br />
-              에어컨 속 보이지 않는 곳까지 세심하게 청소합니다.
+              에어컨 청소부터 신규 설치까지 세심하게 진행합니다.
             </p>
             <div className="hero-actions">
               <a className="button" href="#reservation">
-                에어컨 청소 예약하기 <Icon name="arrow" />
+                청소·설치 예약하기 <Icon name="arrow" />
               </a>
               <a className="text-button" href="#services">
                 서비스 살펴보기 <span>↗</span>
@@ -85,10 +113,10 @@ export default function Home() {
                 <Icon name="check" /> 기종별 맞춤 청소
               </span>
               <span>
-                <Icon name="check" /> 작업 전 비용 안내
+                <Icon name="check" /> 신규 설치 상담
               </span>
               <span>
-                <Icon name="check" /> 꼼꼼한 마무리
+                <Icon name="check" /> 작업 전 비용 안내
               </span>
             </div>
           </div>
@@ -159,6 +187,47 @@ export default function Home() {
           <p className="service-footnote">
             작업시간은 1대 기준 예상 시간이며, 모델과 오염 정도에 따라 달라질 수
             있습니다. 2in1 에어컨은 예약 시 함께 알려주세요.
+          </p>
+        </section>
+        <section id="installation" className="section container services">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">NEW INSTALLATION</span>
+              <h2>새 에어컨, 안전하게 설치해 드려요</h2>
+              <p>신규 구매나 이전 설치도 기종에 맞춰 상담합니다.</p>
+            </div>
+            <span className="heading-note">
+              <Icon name="info" /> 정확한 비용은 현장 확인 후 안내해 드려요
+            </span>
+          </div>
+          <div className="service-grid">
+            {installServices.map((service, index) => (
+              <article className="service-card" key={service.type}>
+                <div className={`service-art art-${service.type}`}>
+                  <span className="service-tag">{service.tag}</span>
+                  <Aircon type={service.type} />
+                  <span className="art-number">0{index + 1}</span>
+                </div>
+                <div className="service-body">
+                  <span className="service-label">{service.label}</span>
+                  <h3>{service.name} 설치</h3>
+                  <p>{service.description}</p>
+                  <div className="service-facts">
+                    <span>
+                      <Icon name="clock" /> {service.time}
+                    </span>
+                    <strong>상담 후 요금 안내</strong>
+                  </div>
+                  <a href="#reservation" className="service-link">
+                    이 서비스 상담하기 <Icon name="arrow" />
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className="service-footnote">
+            설치 비용은 배관 길이, 실외기 위치, 전기 공사 여부에 따라 달라집니다.
+            예약 시 작업 종류에서 설치를 선택해 주세요.
           </p>
         </section>
         <section className="promise-section">
@@ -256,7 +325,7 @@ export default function Home() {
               깨끗한 바람을 전합니다.
             </h2>
             <p>
-              동작구를 중심으로 서울 남서권과 경기 남부권을 방문합니다.
+              동작구를 거점으로 서울 전체와 경기 전체를 방문합니다.
               <br />
               방문 일정은 주소와 작업 내용을 확인한 후 안내해 드려요.
             </p>
@@ -270,24 +339,21 @@ export default function Home() {
                 <Icon name="pin" /> 서울
               </span>
               <div>
-                {[
-                  "동작구",
-                  "관악구",
-                  "영등포구",
-                  "구로구",
-                  "금천구",
-                  "서초구",
-                ].map((area) => (
-                  <span
-                    className={
-                      area === "동작구" ? "area-chip home-area" : "area-chip"
-                    }
-                    key={area}
-                  >
-                    {area}
-                    {area === "동작구" && <small>거점</small>}
-                  </span>
-                ))}
+                {regions
+                  .filter((r) => r.province === "서울")
+                  .map((r) => (
+                    <span
+                      className={
+                        r.name === "동작구"
+                          ? "area-chip home-area"
+                          : "area-chip"
+                      }
+                      key={r.slug}
+                    >
+                      {r.name}
+                      {r.name === "동작구" && <small>거점</small>}
+                    </span>
+                  ))}
               </div>
             </div>
             <div className="area-group">
@@ -295,11 +361,13 @@ export default function Home() {
                 <Icon name="pin" /> 경기
               </span>
               <div>
-                {["광명시", "과천시", "안양시"].map((area) => (
-                  <span className="area-chip" key={area}>
-                    {area}
-                  </span>
-                ))}
+                {regions
+                  .filter((r) => r.province === "경기")
+                  .map((r) => (
+                    <span className="area-chip" key={r.slug}>
+                      {r.name}
+                    </span>
+                  ))}
               </div>
             </div>
             <p>
@@ -335,8 +403,8 @@ export default function Home() {
                 "에어컨 주변의 작은 물건을 치워주시고 물을 사용할 수 있는 장소를 확인해 주세요. 주차 가능 여부, 높은 천장이나 좁은 설치 공간도 미리 알려주시면 도움이 됩니다.",
               ],
               [
-                "에어컨 설치나 이전도 가능한가요?",
-                "현재는 에어컨 청소 서비스를 우선 준비하고 있습니다. 설치와 이전 서비스는 추후 제공 여부가 정해지면 별도로 안내하겠습니다.",
+                "에어컨 설치도 신청할 수 있나요?",
+                "네, 벽걸이·스탠드·시스템 에어컨 신규 설치 상담을 받습니다. 예약 시 작업 종류에서 설치를 선택해 주시면 현장 조건을 확인한 뒤 일정과 비용을 안내합니다. 기존 제품 철거 후 이전 설치가 필요한 경우도 함께 남겨주세요.",
               ],
             ].map(([question, answer]) => (
               <details key={question}>
@@ -355,13 +423,13 @@ export default function Home() {
             <h2>깨끗한 바람, 지금부터 준비하세요.</h2>
           </div>
           <a className="button" href="#reservation">
-            청소 예약 상담하기 <Icon name="arrow" />
+            청소·설치 예약 상담하기 <Icon name="arrow" />
           </a>
         </section>
       </main>
       <footer className="footer container">
         <div className="footer-links">
-          <Link href="/aircon-cleaning">지역별 에어컨 청소</Link>
+          <Link href="/aircon-cleaning">지역별 에어컨 청소·설치</Link>
           <Link href="/privacy">개인정보 처리 안내</Link>
         </div>
         <div className="footer-top">
@@ -378,7 +446,7 @@ export default function Home() {
         </div>
         <div className="footer-bottom">
           <p>
-            서울 남서권 · 경기 남부권 에어컨 청소
+            서울 전체 · 경기 전체 에어컨 청소·설치
             <br />
             <span>온라인 예약 접수 · 방문 일정은 상담 후 확정됩니다.</span>
           </p>

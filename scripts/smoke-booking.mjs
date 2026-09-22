@@ -12,6 +12,7 @@ const marker = `개발검증-${randomUUID().slice(0, 8)}`;
 const date = new Date(Date.now() + 3 * 86400000).toISOString().slice(0, 10);
 const input = {
   requestId: randomUUID(),
+  jobType: "청소",
   service: "벽걸이 에어컨",
   area: "동작구",
   date,

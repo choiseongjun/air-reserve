@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { regions } from "@/lib/regions";
 import {
+  jobTypes,
   services,
   timeSlots,
   seoulDate,
@@ -18,7 +19,8 @@ export default function Booking({
     form = useRef<HTMLFormElement>(null);
   const requestId = useRef("");
   const [dateBounds, setDateBounds] = useState({ min: "", max: "" });
-  const [service, setService] = useState(services[0]),
+  const [jobType, setJobType] = useState(jobTypes[0]),
+    [service, setService] = useState(services[0]),
     [area, setArea] = useState(initialArea),
     [date, setDate] = useState("");
   const [pending, setPending] = useState(false),
@@ -41,6 +43,7 @@ export default function Booking({
     const data = new FormData(event.currentTarget);
     const input: BookingInput = {
       requestId: requestId.current,
+      jobType,
       service,
       area,
       date,
@@ -91,7 +94,7 @@ export default function Booking({
               <Icon name="calendar" />
             </span>
             <div>
-              <h2 id="booking-title">우리 집 에어컨, 청소가 필요할 때</h2>
+              <h2 id="booking-title">우리 집 에어컨, 청소부터 설치까지</h2>
               <p>희망 일정을 남기면 상담 후 방문을 확정합니다.</p>
             </div>
             <span className="preview-badge">온라인 예약 접수</span>
@@ -101,6 +104,7 @@ export default function Booking({
             onSubmit={(e) => {
               e.preventDefault();
               const data = new FormData(e.currentTarget);
+              setJobType(String(data.get("jobType")));
               setService(String(data.get("service")));
               setArea(String(data.get("area")));
               setDate(String(data.get("date")));
@@ -111,6 +115,20 @@ export default function Booking({
               dialog.current?.showModal();
             }}
           >
+            <label>
+              <span>
+                <Icon name="check" /> 작업 종류
+              </span>
+              <select
+                name="jobType"
+                value={jobType}
+                onChange={(e) => setJobType(e.target.value)}
+              >
+                {jobTypes.map((j) => (
+                  <option key={j}>{j}</option>
+                ))}
+              </select>
+            </label>
             <label>
               <span>
                 <Icon name="wind" /> 에어컨 종류
@@ -212,7 +230,9 @@ export default function Booking({
             : "상담과 방문에 필요한 정보를 입력해 주세요."}
         </p>
         <div className="booking-summary">
-          <strong>{service}</strong>
+          <strong>
+            {jobType} · {service}
+          </strong>
           <span>
             {area} · {date}
           </span>
@@ -278,7 +298,7 @@ export default function Booking({
             </label>
             <div className="form-two">
               <label>
-                청소 대수
+                {jobType} 대수
                 <select name="quantity" defaultValue="1">
                   {[1, 2, 3, 4].map((n) => (
                     <option key={n} value={n}>

@@ -22,7 +22,7 @@ export function pageMetadata(
       images: [
         {
           url: `${siteUrl}/images/living-room.jpg`,
-          alt: "맑은바람 에어컨 청소",
+          alt: "맑은바람 에어컨 청소·설치",
         },
       ],
     },

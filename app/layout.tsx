@@ -4,8 +4,8 @@ import { pageMetadata, siteUrl } from "@/lib/seo";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   ...pageMetadata(
-    "동작구·서울 남서권·경기 남부권 에어컨 청소 | 맑은바람",
-    "동작·관악·영등포·구로·금천·서초·광명·과천·안양 에어컨 청소. 벽걸이·스탠드·시스템 청소 비용 상담과 방문 예약을 신청하세요.",
+    "서울 전체·경기 전체 에어컨 청소·설치 | 맑은바람",
+    "서울 25개 구와 경기 전 지역 에어컨 청소·설치. 벽걸이·스탠드·시스템 청소와 신규 설치 비용 상담과 방문 예약을 신청하세요.",
     "/",
   ),
   robots:
