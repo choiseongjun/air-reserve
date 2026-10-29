@@ -3,6 +3,7 @@ import Link from "next/link";
 import Booking from "./components/booking";
 import RegionSearch from "./components/region-search";
 import { Aircon, Icon } from "./components/icons";
+import { siteUrl } from "@/lib/seo";
 
 const options = [
   {
@@ -11,6 +12,7 @@ const options = [
     type: "wall",
     text: "설치할 공간과 실외기 위치부터. 제품과 현장에 맞는 작업 범위를 상담하세요.",
     tag: "신규 설치",
+    href: "/aircon-install",
   },
   {
     number: "02",
@@ -18,6 +20,7 @@ const options = [
     type: "standing",
     text: "철거할 곳과 다시 설치할 곳을 함께 확인해, 이동부터 재설치까지 상담하세요.",
     tag: "이전 설치 문의",
+    href: "/aircon-relocation",
   },
   {
     number: "03",
@@ -25,6 +28,7 @@ const options = [
     type: "ceiling",
     text: "벽걸이부터 시스템까지. 기종과 대수를 알려주시면 청소 상담을 도와드립니다.",
     tag: "청소 상담",
+    href: "/aircon-cleaning",
   },
 ] as const;
 export default function Home() {
@@ -36,11 +40,11 @@ export default function Home() {
       </div>
       <header className="header">
         <div className="container header-inner">
-          <Link className="brand" href="/" aria-label="에어컨파트너 홈">
+          <Link className="brand" href="/" aria-label="더에어컨파트너스 홈">
             <span className="partner-mark">
               ap<span>·</span>
             </span>
-            에어컨파트너
+            더에어컨파트너스
           </Link>
           <nav aria-label="주 메뉴">
             <a href="#services">상담 서비스</a>
@@ -54,11 +58,36 @@ export default function Home() {
         </div>
       </header>
       <main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": `${siteUrl}/#organization`,
+                  name: "더에어컨파트너스",
+                  url: siteUrl,
+                  description:
+                    "서울·경기 에어컨 설치·이전설치·청소 견적 상담 서비스",
+                },
+                {
+                  "@type": "WebSite",
+                  name: "더에어컨파트너스",
+                  url: siteUrl,
+                  inLanguage: "ko-KR",
+                  publisher: { "@id": `${siteUrl}/#organization` },
+                },
+              ],
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
         <section className="partner-hero">
           <div className="container hero">
             <div className="hero-copy">
               <div className="eyebrow">
-                <span /> AIRCON PARTNER · 에어컨 상담의 시작
+                <span /> THE AIRCON PARTNERS · 에어컨 상담의 시작
               </div>
               <h1>
                 에어컨 설치,
@@ -70,7 +99,7 @@ export default function Home() {
               <p className="hero-description">
                 복잡한 배관 비용부터 설치 일정까지.
                 <br />
-                우리 집에 필요한 작업, 에어컨파트너와 먼저 확인하세요.
+                우리 집에 필요한 작업, 더에어컨파트너스와 먼저 확인하세요.
               </p>
               <div className="hero-actions">
                 <a className="button" href="#reservation">
@@ -123,9 +152,9 @@ export default function Home() {
         <div className="container partner-note">
           <Icon name="info" />
           <p>
-            에어컨파트너는 <strong>에어컨 견적·상담 서비스</strong>입니다. 업체
-            연결이 필요한 경우 대상 업체와 전달 정보를 먼저 안내하고 별도 동의를
-            확인합니다.
+            더에어컨파트너스는 <strong>에어컨 견적·상담 서비스</strong>입니다.
+            업체 연결이 필요한 경우 대상 업체와 전달 정보를 먼저 안내하고 별도
+            동의를 확인합니다.
           </p>
         </div>
         <Booking initialJobType="설치" />
@@ -150,13 +179,13 @@ export default function Home() {
                 </div>
                 <div className="service-body">
                   <span className="service-label">
-                    AIRCON PARTNER / {s.number}
+                    THE AIRCON PARTNERS / {s.number}
                   </span>
                   <h3>{s.name}</h3>
                   <p>{s.text}</p>
-                  <a className="service-link" href="#reservation">
-                    상담 요청하기 <Icon name="arrow" />
-                  </a>
+                  <Link className="service-link" href={s.href}>
+                    비용·절차 알아보기 <Icon name="arrow" />
+                  </Link>
                 </div>
               </article>
             ))}
@@ -284,7 +313,7 @@ export default function Home() {
             {[
               [
                 "직접 시공하는 업체인가요?",
-                "에어컨파트너는 에어컨 견적·상담 서비스입니다. 요청 내용과 진행 가능 여부를 확인하며, 시공업체 연결이 필요하면 대상 업체와 전달 정보를 먼저 안내합니다. 상담 신청만으로 제3자에게 개인정보를 자동 전달하지 않습니다.",
+                "더에어컨파트너스는 에어컨 견적·상담 서비스입니다. 요청 내용과 진행 가능 여부를 확인하며, 시공업체 연결이 필요하면 대상 업체와 전달 정보를 먼저 안내합니다. 상담 신청만으로 제3자에게 개인정보를 자동 전달하지 않습니다.",
               ],
               [
                 "설치 비용을 미리 알 수 있나요?",
@@ -325,7 +354,7 @@ export default function Home() {
             <span className="partner-mark">
               ap<span>·</span>
             </span>
-            에어컨파트너
+            더에어컨파트너스
           </Link>
           <span>설치 · 이전 · 청소 상담</span>
           <Link href="/privacy">개인정보 처리 안내 ↗</Link>
@@ -336,7 +365,7 @@ export default function Home() {
             <br />
             업체 연결 시 전달 대상과 목적을 안내하고 별도 동의를 확인합니다.
           </p>
-          <span>© {new Date().getFullYear()} AIRCON PARTNER</span>
+          <span>© {new Date().getFullYear()} THE AIRCON PARTNERS</span>
         </div>
       </footer>
     </>

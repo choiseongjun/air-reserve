@@ -13,9 +13,11 @@ import { Icon } from "./icons";
 export default function Booking({
   initialArea = "",
   initialJobType = "청소",
+  initialNotes = "",
 }: {
   initialArea?: string;
   initialJobType?: string;
+  initialNotes?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
     form = useRef<HTMLFormElement>(null);
@@ -324,6 +326,7 @@ export default function Booking({
               전달하실 내용 <span className="optional">선택</span>
               <textarea
                 name="notes"
+                defaultValue={initialNotes}
                 maxLength={1000}
                 rows={3}
                 placeholder="모델명, 주차 가능 여부, 불편한 점 등을 알려주세요."

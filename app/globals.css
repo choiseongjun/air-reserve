@@ -430,6 +430,42 @@ h1 > span {
   height: 45px;
   font-size: 13px;
 }
+.guide-costs {
+  margin-top: 28px;
+}
+.guide-costs article {
+  display: block;
+}
+.guide-costs h3 {
+  margin-bottom: 14px;
+  font-size: 20px;
+}
+.guide-preparation ol {
+  padding-left: 24px;
+  margin: 24px 0;
+  line-height: 2;
+}
+@media (max-width: 760px) {
+  .header .brand {
+    font-size: 16px;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .header .partner-mark,
+  .header .brand-symbol {
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+  }
+  .header .button.small {
+    padding-inline: 10px;
+    font-size: 11px;
+    gap: 4px;
+  }
+  .header .button.small svg {
+    display: none;
+  }
+}
 .booking-hint {
   display: flex;
   align-items: center;

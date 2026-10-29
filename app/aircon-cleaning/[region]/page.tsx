@@ -16,7 +16,7 @@ export async function generateMetadata({
   const region = getRegion((await params).region);
   if (!region) notFound();
   return pageMetadata(
-    `${region.name} 에어컨 청소·설치 · ${region.neighborhoods.slice(0, 3).join("·")} | 에어컨파트너`,
+    `${region.name} 에어컨 청소·설치·이전설치 · ${region.neighborhoods.slice(0, 3).join("·")} | 더에어컨파트너스`,
     `${region.intro} 벽걸이·스탠드·시스템 청소와 신규 설치 예약 상담, 방문 준비 사항과 비용 기준을 확인하세요.`,
     `/aircon-cleaning/${region.slug}`,
   );
@@ -38,7 +38,11 @@ export default async function RegionPage({
         serviceType: "에어컨 청소",
         description: region.intro,
         url: `${siteUrl}${path}`,
-        provider: { "@type": "Organization", name: "에어컨파트너", url: siteUrl },
+        provider: {
+          "@type": "Organization",
+          name: "더에어컨파트너스",
+          url: siteUrl,
+        },
         areaServed: {
           "@type": "AdministrativeArea",
           name: `${region.province} ${region.name}`,
@@ -50,7 +54,11 @@ export default async function RegionPage({
         serviceType: "에어컨 설치",
         description: `${region.name}에서 벽걸이·스탠드·시스템 에어컨 신규 설치를 상담합니다.`,
         url: `${siteUrl}${path}`,
-        provider: { "@type": "Organization", name: "에어컨파트너", url: siteUrl },
+        provider: {
+          "@type": "Organization",
+          name: "더에어컨파트너스",
+          url: siteUrl,
+        },
         areaServed: {
           "@type": "AdministrativeArea",
           name: `${region.province} ${region.name}`,
@@ -63,7 +71,7 @@ export default async function RegionPage({
           {
             "@type": "ListItem",
             position: 2,
-            name: "에어컨 청소·설치 지역",
+            name: "에어컨 청소·설치·이전설치 지역",
             item: `${siteUrl}/aircon-cleaning`,
           },
           {
@@ -90,7 +98,7 @@ export default async function RegionPage({
           <nav className="breadcrumbs" aria-label="현재 위치">
             <Link href="/">홈</Link>
             <span>/</span>
-            <Link href="/aircon-cleaning">에어컨 청소·설치</Link>
+            <Link href="/aircon-cleaning">에어컨 청소·설치·이전설치</Link>
             <span>/</span>
             <span>{region.name}</span>
           </nav>
@@ -100,7 +108,7 @@ export default async function RegionPage({
           <h1>
             {region.name}
             <br />
-            <span>에어컨 청소·설치</span>
+            <span>에어컨 청소·설치·이전설치</span>
           </h1>
           <h2>{region.headline}</h2>
           <p>{region.intro}</p>
@@ -256,9 +264,9 @@ export default async function RegionPage({
                 <span>+</span>
               </summary>
               <p>
-                네, 벽걸이·스탠드·시스템 에어컨 신규 설치도 상담합니다. 예약
-                시 작업 종류에서 설치를 선택해 주시면 배관 길이, 실외기 위치,
-                전기 용량을 확인한 뒤 비용과 일정을 안내합니다.
+                네, 벽걸이·스탠드·시스템 에어컨 신규 설치도 상담합니다. 예약 시
+                작업 종류에서 설치를 선택해 주시면 배관 길이, 실외기 위치, 전기
+                용량을 확인한 뒤 비용과 일정을 안내합니다.
               </p>
             </details>
             <details>
@@ -283,6 +291,19 @@ export default async function RegionPage({
             </details>
           </div>
         </section>
+        <section className="container section">
+          <h2>{region.name} 설치·이전설치 견적 준비</h2>
+          <p>
+            신규 설치는 배관 길이와 실외기 위치를, 이전설치는 철거할 주소와 새
+            설치 주소를 함께 확인합니다. 지역별 출입·주차 조건을 위에서 확인하고
+            작업 종류에 맞는 비용 안내를 살펴보세요.
+          </p>
+          <div className="related-regions">
+            <Link href="/aircon-install">에어컨 설치 비용·배관 안내 →</Link>
+            <Link href="/aircon-relocation">에어컨 이전설치·철거 안내 →</Link>
+            <Link href="/aircon-cleaning">에어컨 청소·분해 범위 안내 →</Link>
+          </div>
+        </section>
         <Booking initialArea={region.name} />
         <section className="container section">
           <h2>인근 지역도 살펴보세요</h2>
@@ -294,14 +315,14 @@ export default async function RegionPage({
               .slice(0, 12)
               .map((r) => (
                 <Link key={r.slug} href={`/aircon-cleaning/${r.slug}`}>
-                  {r.name} 에어컨 청소·설치 ↗
+                  {r.name} 에어컨 청소·설치·이전설치 ↗
                 </Link>
               ))}
           </div>
         </section>
       </main>
       <footer className="container footer">
-        <Link href="/">에어컨파트너 홈으로</Link> ·{" "}
+        <Link href="/">더에어컨파트너스 홈으로</Link> ·{" "}
         <Link href="/privacy">개인정보 처리 안내</Link>
       </footer>
     </>

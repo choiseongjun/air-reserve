@@ -16,13 +16,13 @@ export function pageMetadata(
       title,
       description,
       url,
-      siteName: "에어컨파트너",
+      siteName: "더에어컨파트너스",
       locale: "ko_KR",
       type: "website",
       images: [
         {
           url: `${siteUrl}/images/living-room.jpg`,
-          alt: "에어컨파트너 에어컨 청소·설치",
+          alt: "더에어컨파트너스 에어컨 청소·설치",
         },
       ],
     },

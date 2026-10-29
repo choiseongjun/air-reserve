@@ -2,7 +2,7 @@ import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = {
   ...pageMetadata(
-    "개인정보 수집·이용 안내 | 에어컨파트너",
+    "개인정보 수집·이용 안내 | 더에어컨파트너스",
     "청소 예약 상담을 위한 개인정보 수집·이용 안내입니다.",
     "/privacy",
   ),
@@ -12,7 +12,7 @@ export default function Privacy() {
   return (
     <main className="container section policy-page">
       <Link className="brand" href="/">
-        에어컨파트너
+        더에어컨파트너스
       </Link>
       <h1>개인정보 수집·이용 안내</h1>
       <p>에어컨 청소 상담과 방문 일정 조율을 위해 아래 정보를 수집합니다.</p>
