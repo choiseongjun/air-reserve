@@ -14,6 +14,7 @@ try {
   await client.connect();
   await client.query("BEGIN");
   await client.query(readFileSync(resolve("db/001-bookings.sql"), "utf8"));
+  await client.query(readFileSync(resolve("db/002-booking-photos.sql"), "utf8"));
   await client.query("COMMIT");
   console.log(
     "air_reserve schema ready. Existing application schemas unchanged.",

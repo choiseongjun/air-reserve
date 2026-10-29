@@ -31,7 +31,7 @@ export default async function Admin({
   try {
     rows = (
       await getPool().query(
-        "SELECT id,customer_name,phone,address,job_type,service,area,to_char(preferred_date,'YYYY-MM-DD') AS preferred_date,time_slot,quantity,notes,status,created_at FROM air_reserve.bookings ORDER BY created_at DESC LIMIT 21 OFFSET $1",
+        "SELECT id,customer_name,phone,address,job_type,service,area,to_char(preferred_date,'YYYY-MM-DD') AS preferred_date,time_slot,quantity,notes,status,created_at, ARRAY(SELECT p.id FROM air_reserve.booking_photos p WHERE p.booking_id=bookings.id ORDER BY p.position) AS photo_ids FROM air_reserve.bookings ORDER BY created_at DESC LIMIT 21 OFFSET $1",
         [(page - 1) * 20],
       )
     ).rows;
@@ -88,6 +88,21 @@ export default async function Admin({
               <dd>{row.address}</dd>
               <dt>전달 사항</dt>
               <dd>{row.notes || "없음"}</dd>
+              <dt>현장 사진</dt>
+              <dd className="attached-photos">
+                {row.photo_ids.length
+                  ? row.photo_ids.map((id: string, index: number) => (
+                      <a
+                        key={id}
+                        href={`/api/admin/photos/${id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        사진 {index + 1} 보기 ↗
+                      </a>
+                    ))
+                  : "첨부 없음"}
+              </dd>
               <dt>접수 시각</dt>
               <dd>
                 {new Date(row.created_at).toLocaleString("ko-KR", {

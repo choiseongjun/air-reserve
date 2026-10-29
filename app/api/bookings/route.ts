@@ -1,6 +1,7 @@
 import { validateBooking } from "@/lib/booking-validation";
 import { createBooking, BookingError } from "@/lib/bookings";
 import { readJson, sameOrigin } from "@/lib/request";
+import { validatePhotos } from "@/lib/booking-photos";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
   if (!sameOrigin(request))
@@ -9,8 +10,18 @@ export async function POST(request: Request) {
       { status: 403 },
     );
   let input;
+  let photos: Buffer[];
   try {
-    input = validateBooking(await readJson(request));
+    const body = await readJson(request, 3200000);
+    input = validateBooking(body);
+    const raw = body as Record<string, unknown>;
+    if (
+      Array.isArray(raw.photos) &&
+      raw.photos.length &&
+      raw.photoConsent !== true
+    )
+      throw new Error("사진 수집·이용에 동의하거나 첨부를 취소해 주세요.");
+    photos = await validatePhotos((body as Record<string, unknown>).photos);
   } catch (error) {
     return Response.json(
       {
@@ -21,7 +32,7 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const result = await createBooking(input);
+    const result = await createBooking(input, photos);
     return Response.json(
       { id: result.id, status: "pending" },
       {

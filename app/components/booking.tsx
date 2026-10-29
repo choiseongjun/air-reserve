@@ -10,6 +10,7 @@ import {
   type BookingInput,
 } from "@/lib/booking-validation";
 import { Icon } from "./icons";
+import { preparePhoto } from "@/lib/prepare-photo";
 export default function Booking({
   initialArea = "",
   initialJobType = "청소",
@@ -22,8 +23,13 @@ export default function Booking({
   const dialog = useRef<HTMLDialogElement>(null),
     form = useRef<HTMLFormElement>(null);
   const requestId = useRef("");
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [processingPhotos, setProcessingPhotos] = useState(false);
+  const [photoError, setPhotoError] = useState("");
   const [dateBounds, setDateBounds] = useState({ min: "", max: "" });
-  const [jobType, setJobType] = useState(initialJobType),
+  const [jobType, setJobType] = useState(
+      initialNotes.startsWith("이전설치 문의") ? "이전설치" : initialJobType,
+    ),
     [service, setService] = useState(services[0]),
     [area, setArea] = useState(initialArea),
     [date, setDate] = useState("");
@@ -33,17 +39,19 @@ export default function Booking({
     null,
   );
   const close = () => {
-    if (pending) return;
+    if (pending || processingPhotos) return;
     dialog.current?.close();
     if (receipt) {
       form.current?.reset();
       setReceipt(null);
       requestId.current = "";
+      setPhotos([]);
+      setPhotoError("");
     }
   };
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending) return;
+    if (pending || processingPhotos) return;
     const data = new FormData(event.currentTarget);
     const input: BookingInput = {
       requestId: requestId.current,
@@ -66,8 +74,12 @@ export default function Booking({
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-        signal: AbortSignal.timeout(20000),
+        body: JSON.stringify({
+          ...input,
+          photos,
+          photoConsent: data.get("photoConsent") === "on",
+        }),
+        signal: AbortSignal.timeout(45000),
       });
       const result = await response.json();
       if (!response.ok)
@@ -100,10 +112,11 @@ export default function Booking({
             <div>
               <h2 id="booking-title">어떤 에어컨 상담이 필요하세요?</h2>
               <p>
-                요청 내용을 확인하고 진행 가능 여부와 견적 절차를 안내합니다.
+                지역·작업 선택 → 현장 사진 첨부 → 연락처 입력으로 간편하게
+                접수하세요.
               </p>
             </div>
-            <span className="preview-badge">온라인 예약 접수</span>
+            <span className="preview-badge">사진으로 간편 상담</span>
           </div>
           <form
             className="quick-booking"
@@ -196,12 +209,12 @@ export default function Booking({
               />
             </label>
             <button className="button">
-              예약 상담하기 <Icon name="arrow" />
+              사진 첨부하고 상담 접수 <Icon name="arrow" />
             </button>
           </form>
           <p className="booking-hint">
-            <Icon name="info" /> 예약은 접수 대기 상태로 저장되며, 비용과 방문
-            일정은 담당자 상담 후 확정됩니다.
+            <Icon name="info" /> 상담 접수 → 지역 내 작업 가능 업체 확인 →
+            견적·일정 협의 → 예약 확정. 접수만으로 방문이 확정되지는 않습니다.
           </p>
         </div>
       </section>
@@ -221,19 +234,21 @@ export default function Booking({
           type="button"
           className="dialog-close"
           aria-label="예약 창 닫기"
-          disabled={pending}
+          disabled={pending || processingPhotos}
           onClick={close}
         >
           ×
         </button>
         <span className="section-kicker">BOOK YOUR FRESH AIR</span>
         <h2 id="dialog-title">
-          {receipt ? "예약 요청이 접수되었어요" : "조금만 더 알려주세요"}
+          {receipt
+            ? "상담 요청이 접수되었어요"
+            : `${area} 현장 사진과 연락처를 남겨주세요`}
         </h2>
         <p className="dialog-description">
           {receipt
-            ? `${receipt.name}님, 담당자가 연락해 방문 일정을 조율합니다.`
-            : "상담과 방문에 필요한 정보를 입력해 주세요."}
+            ? `${receipt.name}님, ${area} 작업 가능 여부를 확인하고 연락드립니다. 사진 ${photos.length}장도 접수 내용에 저장했습니다.`
+            : "사진은 선택 사항입니다. 사진 없이도 상담을 접수할 수 있어요."}
         </p>
         <div className="booking-summary">
           <strong>
@@ -268,6 +283,96 @@ export default function Booking({
           aria-busy={pending}
         >
           <fieldset disabled={pending} className="booking-fields">
+            <div className="photo-upload">
+              <h3>
+                {area} {jobType} 상담 사진{" "}
+                <span className="optional">선택 · 최대 3장</span>
+              </h3>
+              <p>
+                {jobType === "청소"
+                  ? "에어컨 전체 모습 · 모델명 · 오염이나 누수가 보이는 부분을 찍어주세요."
+                  : jobType === "이전설치"
+                    ? "기존 에어컨 · 새집 설치할 벽 · 실외기 놓을 곳을 찍어주세요."
+                    : "설치할 벽 · 실외기 놓을 곳 · 제품 모델명을 찍어주세요."}
+              </p>
+              <p>
+                얼굴·문서·비밀번호 등은 제외해 주세요. 사진은 공개되지 않으며
+                상담 담당자만 확인합니다.
+              </p>
+              <label>
+                {processingPhotos
+                  ? "사진을 준비하고 있어요…"
+                  : "현장 사진 선택"}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  multiple
+                  disabled={processingPhotos || photos.length >= 3}
+                  onChange={async (e) => {
+                    const files = Array.from(e.target.files || []);
+                    e.target.value = "";
+                    setPhotoError("");
+                    if (files.length + photos.length > 3) {
+                      setPhotoError("사진은 최대 3장까지 선택해 주세요.");
+                      return;
+                    }
+                    setProcessingPhotos(true);
+                    try {
+                      const prepared: string[] = [];
+                      for (const file of files)
+                        prepared.push(await preparePhoto(file));
+                      setPhotos((previous) => [...previous, ...prepared]);
+                    } catch (error) {
+                      setPhotoError(
+                        error instanceof Error
+                          ? error.message
+                          : "사진을 다시 선택해 주세요.",
+                      );
+                    } finally {
+                      setProcessingPhotos(false);
+                    }
+                  }}
+                />
+              </label>
+              <small>
+                JPG·PNG·WebP, 원본 1장당 20MB 이하. 전송 전 용량을 줄입니다.
+              </small>
+              <div className="photo-previews">
+                {photos.map((photo, index) => (
+                  <div key={index}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`data:image/jpeg;base64,${photo}`}
+                      alt={`첨부할 현장 사진 ${index + 1}`}
+                    />
+                    <button
+                      type="button"
+                      disabled={processingPhotos}
+                      onClick={() =>
+                        setPhotos((previous) =>
+                          previous.filter((_, i) => i !== index),
+                        )
+                      }
+                    >
+                      사진 {index + 1} 삭제
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {photoError && (
+                <p role="alert" className="form-error">
+                  {photoError}
+                </p>
+              )}
+              {!!photos.length && (
+                <label className="consent-check">
+                  <input type="checkbox" name="photoConsent" required />
+                  현장 사진을 견적 상담 목적으로 수집·이용하는 데 동의합니다.
+                  접수일과 희망일 중 늦은 날부터 90일 후 삭제되며, 첨부를
+                  취소해도 상담할 수 있습니다.
+                </label>
+              )}
+            </div>
             <label>
               성함
               <input
@@ -292,14 +397,14 @@ export default function Booking({
               />
             </label>
             <label>
-              방문 주소
+              작업할 동네·주소
               <input
                 name="address"
                 autoComplete="street-address"
                 required
                 minLength={5}
                 maxLength={200}
-                placeholder="도로명 주소와 상세 주소를 입력해 주세요"
+                placeholder="예: 동작구 상도동 (동·호수는 상담 시 안내)"
               />
             </label>
             <div className="form-two">
@@ -360,8 +465,12 @@ export default function Booking({
               {error}
             </p>
           )}
-          <button className="button" type="submit" disabled={pending}>
-            {pending ? "예약 접수 중…" : "예약 상담 신청하기"}
+          <button
+            className="button"
+            type="submit"
+            disabled={pending || processingPhotos}
+          >
+            {pending ? "사진과 상담 내용 접수 중…" : "상담 접수 완료하기"}
             <Icon name="arrow" />
           </button>
         </form>

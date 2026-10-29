@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { parseEnv } from "node:util";
 import pg from "pg";
+import sharp from "sharp";
 const env = parseEnv(readFileSync(".env.local", "utf8"));
 const base = process.env.TEST_BASE_URL || "http://localhost:3000";
 const origin = new URL(base).origin;
@@ -12,7 +13,7 @@ const marker = `개발검증-${randomUUID().slice(0, 8)}`;
 const date = new Date(Date.now() + 3 * 86400000).toISOString().slice(0, 10);
 const input = {
   requestId: randomUUID(),
-  jobType: "청소",
+  jobType: "이전설치",
   service: "벽걸이 에어컨",
   area: "동작구",
   date,
@@ -23,6 +24,8 @@ const input = {
   timeSlot: "시간 협의 가능",
   notes: "자동 검증 데이터; 검증 후 삭제",
   consent: true,
+  photoConsent: true,
+  photos: [(await sharp({ create: { width: 32, height: 32, channels: 3, background: "#2856ef" } }).jpeg().toBuffer()).toString("base64")],
 };
 async function send(path, body, options = {}) {
   return fetch(base + path, {
@@ -53,6 +56,9 @@ try {
     { date: "2020-01-01" },
     { phone: "abc" },
     { quantity: 0 },
+    { photoConsent: false },
+    { photos: [Buffer.from("not an image").toString("base64")] },
+    { photos: Array(4).fill(input.photos[0]) },
   ])
     assert.equal(
       (await send("/api/bookings", { ...input, ...change })).status,
@@ -97,6 +103,16 @@ try {
   });
   assert.equal(login.status, 200);
   const cookie = login.headers.get("set-cookie").split(";")[0];
+  const photoRow = (await client.query("SELECT id FROM air_reserve.booking_photos WHERE booking_id=$1", [saved.id])).rows;
+  assert.equal(photoRow.length, 1, "retry must not duplicate photos");
+  assert.ok((await client.query("SELECT photo_consent_at FROM air_reserve.bookings WHERE id=$1", [saved.id])).rows[0].photo_consent_at);
+  const photoPath = base + `/api/admin/photos/${photoRow[0].id}`;
+  assert.equal((await fetch(photoPath)).status, 401);
+  const image = await fetch(photoPath, { headers: { Cookie: cookie } });
+  assert.equal(image.status, 200);
+  assert.match(image.headers.get("cache-control"), /no-store/);
+  assert.equal(image.headers.get("content-type"), "image/jpeg");
+  assert.equal((await sharp(Buffer.from(await image.arrayBuffer())).metadata()).format, "jpeg");
   const admin = await (
     await fetch(base + "/admin", { headers: { Cookie: cookie } })
   ).text();
@@ -136,13 +152,14 @@ try {
     429,
   );
   console.log(
-    "PASS: save/read, duplicate retry, changed retry, validation, origin protection, admin authorization, status update, retention auth, booking quota.",
+    "PASS: photo save/read, photo consent, malformed/too many images, duplicate retry, validation, origin protection, private photo authorization, status update, retention auth, booking quota.",
   );
 } finally {
   await client.query(
     "DELETE FROM air_reserve.bookings WHERE request_id=ANY($1::uuid[]) AND customer_name=$2",
     [requestIds, marker],
   );
+  assert.equal((await client.query("SELECT count(*)::int AS count FROM air_reserve.booking_photos p LEFT JOIN air_reserve.bookings b ON p.booking_id=b.id WHERE b.id IS NULL")).rows[0].count, 0);
   await client.end();
   console.log("Only synthetic records from this run were removed.");
 }

@@ -6,9 +6,9 @@ export const services = [
   "2in1 에어컨",
   "종류를 잘 모르겠어요",
 ];
-export const jobTypes = ["청소", "설치"];
+export const jobTypes = ["청소", "설치", "이전설치"];
 export const timeSlots = ["시간 협의 가능", "오전 (9–12시)", "오후 (12–18시)"];
-export const consentVersion = "2026-09-18";
+export const consentVersion = "2026-10-29-photos";
 export function seoulDate(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Seoul",

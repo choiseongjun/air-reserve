@@ -430,6 +430,49 @@ h1 > span {
   height: 45px;
   font-size: 13px;
 }
+.photo-upload {
+  padding: 18px;
+  background: #f3f6fc;
+  border: 1px solid #dce5f5;
+  border-radius: 14px;
+}
+.photo-upload h3 {
+  font-size: 17px;
+}
+.photo-upload p,
+.photo-upload small {
+  display: block;
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 8px 0;
+}
+.photo-upload input[type="file"] {
+  max-width: 100%;
+  padding: 10px 0;
+  height: auto;
+}
+.photo-previews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.photo-previews img {
+  width: 100%;
+  height: 95px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.photo-previews button {
+  font-size: 12px;
+  padding: 8px 0;
+  color: #23385f;
+}
+.attached-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
 .guide-costs {
   margin-top: 28px;
 }

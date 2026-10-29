@@ -10,13 +10,21 @@ export class BookingError extends Error {
     super(message);
   }
 }
-export async function createBooking(input: BookingInput) {
+export async function createBooking(
+  input: BookingInput,
+  photos: Buffer[] = [],
+) {
   const secret = process.env.BOOKING_HASH_SECRET;
   if (!secret) throw new Error("Booking configuration is missing");
   const hash = (v: string) =>
     createHmac("sha256", secret).update(v).digest("hex");
   const phoneHash = hash(input.phone),
-    payloadHash = hash(JSON.stringify(input));
+    payloadHash = hash(
+      JSON.stringify(input) +
+        (photos.length
+          ? photos.map((p) => hash(p.toString("base64"))).join("")
+          : ""),
+    );
   const client = await getPool().connect();
   try {
     await client.query("BEGIN");
@@ -65,6 +73,17 @@ export async function createBooking(input: BookingInput) {
         consentVersion,
       ],
     );
+    for (const [position, photo] of photos.entries()) {
+      await client.query(
+        "INSERT INTO air_reserve.booking_photos (id,booking_id,position,image) VALUES ($1,$2,$3,$4)",
+        [randomUUID(), id, position, photo],
+      );
+    }
+    if (photos.length)
+      await client.query(
+        "UPDATE air_reserve.bookings SET photo_consent_at=now() WHERE id=$1",
+        [id],
+      );
     await client.query("COMMIT");
     return { id, duplicate: false };
   } catch (error) {
