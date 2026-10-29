@@ -11,6 +11,16 @@ export function pageMetadata(
   return {
     title,
     description,
+    robots:
+      process.env.VERCEL_ENV === "preview"
+        ? { index: false, follow: false }
+        : {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
     alternates: { canonical: url },
     openGraph: {
       title,

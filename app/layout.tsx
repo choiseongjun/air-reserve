@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { pageMetadata, siteUrl } from "@/lib/seo";
@@ -31,6 +32,12 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         {children}
+        <nav className="container related-regions" aria-label="서비스 정보" style={{ paddingBlock: 24 }}>
+          <Link href="/about">더에어컨파트너스 소개·업체 연결 절차</Link>
+          <Link href="/aircon-install">설치 비용 안내</Link>
+          <Link href="/aircon-relocation">이전설치 안내</Link>
+          <Link href="/aircon-cleaning">청소·지역 안내</Link>
+        </nav>
         <Analytics />
       </body>
     </html>
