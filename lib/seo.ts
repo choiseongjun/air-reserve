@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 export const siteUrl = (
-  process.env.SITE_URL || "https://air-reserve-three.vercel.app"
+  process.env.SITE_URL || "https://airconpartner.kr"
 ).replace(/\/$/, "");
 export function pageMetadata(
   title: string,

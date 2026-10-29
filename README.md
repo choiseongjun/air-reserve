@@ -1,6 +1,6 @@
 # 에어컨파트너 · 에어컨 청소 예약
 
-운영 주소: https://air-reserve-three.vercel.app
+운영 주소: https://airconpartner.kr
 
 ## 실행
 
@@ -24,7 +24,7 @@
 - BOOKING_HASH_SECRET: 전화번호·요청 해시용 임의의 긴 비밀 값. 운영 중 임의로 바꾸면 기존 요청 재시도에 영향을 줍니다.
 - ADMIN_PASSWORD: /admin 로그인 비밀번호. 변경하면 기존 로그인 쿠키도 무효화됩니다.
 - CRON_SECRET: 보관 기간 만료 데이터 정리 작업 인증 키
-- SITE_URL: https://air-reserve-three.vercel.app
+- SITE_URL: https://airconpartner.kr
 - GOOGLE_SITE_VERIFICATION / NAVER_SITE_VERIFICATION: 검색 도구의 소유권 확인 값 (선택)
 
 현재 로컬 관리자 비밀번호는 Git에서 제외된 .env.local의 ADMIN_PASSWORD에서 확인합니다. 프로덕션 Vercel 환경 변수에도 같은 값을 등록합니다.
@@ -58,4 +58,4 @@
 
 대표 이미지는 Unsplash의 공간 연출 사진이며 실제 작업사례가 아닙니다.
 
-브랜드: 에어컨파트너 (AIRCON PARTNER). airconpartner.kr은 구매·DNS 연결 확인 후 SITE_URL을 변경합니다. 현재 canonical은 기존 운영 주소를 유지합니다.
+브랜드: 에어컨파트너 (AIRCON PARTNER). 대표 도메인은 airconpartner.kr이며 www는 대표 도메인으로 이동합니다. Hosting.kr DNS에서 Vercel로 연결합니다.
