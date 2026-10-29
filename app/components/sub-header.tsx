@@ -8,7 +8,7 @@ export default function SubHeader() {
           <span className="brand-symbol">
             <Icon name="wind" />
           </span>
-          맑은바람
+          에어컨파트너
         </Link>
         <nav aria-label="주 메뉴">
           <Link href="/aircon-cleaning">방문 지역 찾기</Link>

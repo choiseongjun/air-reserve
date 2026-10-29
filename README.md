@@ -1,4 +1,4 @@
-# 맑은바람 · 에어컨 청소 예약
+# 에어컨파트너 · 에어컨 청소 예약
 
 운영 주소: https://air-reserve-three.vercel.app
 
@@ -57,3 +57,5 @@
 - db/001-bookings.sql: 전용 스키마
 
 대표 이미지는 Unsplash의 공간 연출 사진이며 실제 작업사례가 아닙니다.
+
+브랜드: 에어컨파트너 (AIRCON PARTNER). airconpartner.kr은 구매·DNS 연결 확인 후 SITE_URL을 변경합니다. 현재 canonical은 기존 운영 주소를 유지합니다.

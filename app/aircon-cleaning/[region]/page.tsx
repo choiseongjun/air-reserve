@@ -16,7 +16,7 @@ export async function generateMetadata({
   const region = getRegion((await params).region);
   if (!region) notFound();
   return pageMetadata(
-    `${region.name} 에어컨 청소·설치 · ${region.neighborhoods.slice(0, 3).join("·")} | 맑은바람`,
+    `${region.name} 에어컨 청소·설치 · ${region.neighborhoods.slice(0, 3).join("·")} | 에어컨파트너`,
     `${region.intro} 벽걸이·스탠드·시스템 청소와 신규 설치 예약 상담, 방문 준비 사항과 비용 기준을 확인하세요.`,
     `/aircon-cleaning/${region.slug}`,
   );
@@ -38,7 +38,7 @@ export default async function RegionPage({
         serviceType: "에어컨 청소",
         description: region.intro,
         url: `${siteUrl}${path}`,
-        provider: { "@type": "Organization", name: "맑은바람", url: siteUrl },
+        provider: { "@type": "Organization", name: "에어컨파트너", url: siteUrl },
         areaServed: {
           "@type": "AdministrativeArea",
           name: `${region.province} ${region.name}`,
@@ -50,7 +50,7 @@ export default async function RegionPage({
         serviceType: "에어컨 설치",
         description: `${region.name}에서 벽걸이·스탠드·시스템 에어컨 신규 설치를 상담합니다.`,
         url: `${siteUrl}${path}`,
-        provider: { "@type": "Organization", name: "맑은바람", url: siteUrl },
+        provider: { "@type": "Organization", name: "에어컨파트너", url: siteUrl },
         areaServed: {
           "@type": "AdministrativeArea",
           name: `${region.province} ${region.name}`,
@@ -301,7 +301,7 @@ export default async function RegionPage({
         </section>
       </main>
       <footer className="container footer">
-        <Link href="/">맑은바람 홈으로</Link> ·{" "}
+        <Link href="/">에어컨파트너 홈으로</Link> ·{" "}
         <Link href="/privacy">개인정보 처리 안내</Link>
       </footer>
     </>

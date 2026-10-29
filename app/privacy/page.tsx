@@ -2,7 +2,7 @@ import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = {
   ...pageMetadata(
-    "개인정보 수집·이용 안내 | 맑은바람",
+    "개인정보 수집·이용 안내 | 에어컨파트너",
     "청소 예약 상담을 위한 개인정보 수집·이용 안내입니다.",
     "/privacy",
   ),
@@ -12,7 +12,7 @@ export default function Privacy() {
   return (
     <main className="container section policy-page">
       <Link className="brand" href="/">
-        맑은바람
+        에어컨파트너
       </Link>
       <h1>개인정보 수집·이용 안내</h1>
       <p>에어컨 청소 상담과 방문 일정 조율을 위해 아래 정보를 수집합니다.</p>
@@ -31,6 +31,12 @@ export default function Privacy() {
       <p>
         동의를 거부할 수 있으며, 거부 시 온라인 예약 상담을 신청할 수 없습니다.
         삭제 또는 수정은 상담 연락 시 접수번호와 함께 요청해 주세요.
+      </p>
+      <h2>업체 연결 시 안내</h2>
+      <p>
+        온라인 상담 신청만으로 개인정보를 시공업체에 자동 전달하지 않습니다.
+        업체 연결이 필요한 경우 전달받는 업체, 목적, 항목과 보관 기간을 안내하고
+        별도 동의를 확인합니다.
       </p>
       <h2>접근과 보안</h2>
       <p>

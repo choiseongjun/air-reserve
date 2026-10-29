@@ -3,7 +3,7 @@ import { isAdmin } from "@/lib/admin-auth";
 import { getPool } from "@/lib/db";
 import { AdminLogin, AdminToolbar, BookingStatus } from "./controls";
 export const metadata = {
-  title: "예약 관리 | 맑은바람",
+  title: "예약 관리 | 에어컨파트너",
   robots: { index: false, follow: false },
 };
 export const dynamic = "force-dynamic";
@@ -17,7 +17,7 @@ export default async function Admin({
     return (
       <main className="container section">
         <Link className="brand" href="/">
-          맑은바람
+          에어컨파트너
         </Link>
         <h1 className="admin-title">예약 관리</h1>
         <p>담당자 전용 화면입니다.</p>
@@ -48,7 +48,7 @@ export default async function Admin({
       <div className="section-heading">
         <div>
           <Link href="/" className="brand">
-            맑은바람
+            에어컨파트너
           </Link>
           <h1 className="admin-title">예약 접수 내역</h1>
           <p>

@@ -4,7 +4,7 @@ import RegionSearch from "@/app/components/region-search";
 import Booking from "@/app/components/booking";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
-  "서울 전체·경기 전체 에어컨 청소·설치 지역 찾기 | 맑은바람",
+  "서울 전체·경기 전체 에어컨 청소·설치 지역 찾기 | 에어컨파트너",
   "서울 25개 구와 경기 전 지역 에어컨 청소·설치. 상도동, 신림동, 철산동 등 동 이름으로 방문 권역을 찾고 상담을 신청하세요.",
   "/aircon-cleaning",
 );
@@ -35,7 +35,7 @@ export default function Areas() {
         <Booking />
       </main>
       <footer className="container section">
-        <Link href="/">맑은바람 홈으로 →</Link>
+        <Link href="/">에어컨파트너 홈으로 →</Link>
       </footer>
     </>
   );

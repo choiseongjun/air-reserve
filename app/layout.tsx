@@ -4,8 +4,8 @@ import { pageMetadata, siteUrl } from "@/lib/seo";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   ...pageMetadata(
-    "서울 전체·경기 전체 에어컨 청소·설치 | 맑은바람",
-    "서울 25개 구와 경기 전 지역 에어컨 청소·설치. 벽걸이·스탠드·시스템 청소와 신규 설치 비용 상담과 방문 예약을 신청하세요.",
+    "에어컨 설치·이전·청소 견적 상담 | 에어컨파트너",
+    "서울·경기 에어컨 설치·이전·청소 견적 상담. 기종과 배관, 실외기 설치 환경을 확인하고 진행 가능 여부와 견적 절차를 안내합니다.",
     "/",
   ),
   robots:

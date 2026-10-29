@@ -1,458 +1,342 @@
 import Image from "next/image";
 import Link from "next/link";
-import RegionSearch from "./components/region-search";
 import Booking from "./components/booking";
+import RegionSearch from "./components/region-search";
 import { Aircon, Icon } from "./components/icons";
-import { regions } from "@/lib/regions";
-const services = [
+
+const options = [
   {
-    name: "벽걸이 에어컨",
+    number: "01",
+    name: "새 에어컨 설치",
     type: "wall",
-    label: "작은 방부터 거실까지",
-    description: "눈에 보이지 않는 내부 오염까지 꼼꼼하게",
-    time: "약 1–1.5시간",
-    tag: "가정용",
+    text: "설치할 공간과 실외기 위치부터. 제품과 현장에 맞는 작업 범위를 상담하세요.",
+    tag: "신규 설치",
   },
   {
-    name: "스탠드 에어컨",
+    number: "02",
+    name: "이사 · 이전 설치",
     type: "standing",
-    label: "우리 집 여름의 중심",
-    description: "필터부터 송풍팬까지, 구석구석 깨끗하게",
-    time: "약 1.5–2시간",
-    tag: "가정용",
+    text: "철거할 곳과 다시 설치할 곳을 함께 확인해, 이동부터 재설치까지 상담하세요.",
+    tag: "이전 설치 문의",
   },
   {
-    name: "시스템 에어컨",
+    number: "03",
+    name: "에어컨 청소",
     type: "ceiling",
-    label: "넓은 공간도 쾌적하게",
-    description: "천장형 에어컨도 공간에 맞춰 세심하게",
-    time: "약 1.5–2.5시간",
-    tag: "가정용 · 상업용",
-  },
-] as const;
-const installServices = [
-  {
-    name: "벽걸이 에어컨",
-    type: "wall",
-    label: "신규 구매·인테리어 공사 후 설치",
-    description: "배관 길이와 실외기 위치를 확인해 안전하게 설치합니다",
-    time: "약 1.5–2시간",
-    tag: "설치",
-  },
-  {
-    name: "스탠드 에어컨",
-    type: "standing",
-    label: "거실이나 넓은 공간에",
-    description: "전기 용량과 설치 위치를 확인한 뒤 배관·배수를 연결합니다",
-    time: "약 2–3시간",
-    tag: "설치",
-  },
-  {
-    name: "시스템 에어컨",
-    type: "ceiling",
-    label: "매장·사무실 등 여러 대 설치도",
-    description: "천장 구조와 실내기 대수를 확인해 배관·전기 작업을 진행합니다",
-    time: "약 3시간~ (대수별 상이)",
-    tag: "설치",
+    text: "벽걸이부터 시스템까지. 기종과 대수를 알려주시면 청소 상담을 도와드립니다.",
+    tag: "청소 상담",
   },
 ] as const;
 export default function Home() {
   return (
     <>
       <div className="announcement">
-        <span className="status-dot" /> 서울 전역과 경기 전역, 우리 동네
-        에어컨 케어 <span className="announcement-divider">|</span>
-        <span className="announcement-extra">서울 전체 · 경기 전체</span>
+        설치부터 이전·청소까지 <span className="announcement-divider">|</span>{" "}
+        에어컨 고민에, 든든한 파트너
       </div>
       <header className="header">
         <div className="container header-inner">
-          <a href="#" className="brand" aria-label="맑은바람 홈">
-            <span className="brand-symbol">
-              <Icon name="wind" />
+          <Link className="brand" href="/" aria-label="에어컨파트너 홈">
+            <span className="partner-mark">
+              ap<span>·</span>
             </span>
-            맑은바람<span className="brand-en">CLEAR AIR</span>
-          </a>
+            에어컨파트너
+          </Link>
           <nav aria-label="주 메뉴">
-            <a href="#services">청소 안내</a>
-            <a href="#installation">설치 안내</a>
-            <a href="#process">청소 과정</a>
-            <a href="#areas">방문 가능 지역</a>
+            <a href="#services">상담 서비스</a>
+            <a href="#estimate">견적 체크포인트</a>
+            <Link href="/aircon-cleaning">지역 찾기</Link>
             <a href="#faq">자주 묻는 질문</a>
           </nav>
-          <a href="#reservation" className="button small">
-            예약 상담하기 <Icon name="arrow" />
+          <a className="button small" href="#reservation">
+            견적 상담하기 <Icon name="arrow" />
           </a>
         </div>
       </header>
       <main>
-        <section className="hero container">
-          <div className="hero-copy">
-            <div className="eyebrow">
-              <span /> 깨끗한 바람, 기분 좋은 일상
-            </div>
-            <h1>
-              우리 집 공기를
-              <br />
-              다시, <span>맑게.</span>
-            </h1>
-            <p className="hero-description">
-              매일 숨 쉬는 공간이니까.
-              <br />
-              에어컨 청소부터 신규 설치까지 세심하게 진행합니다.
-            </p>
-            <div className="hero-actions">
-              <a className="button" href="#reservation">
-                청소·설치 예약하기 <Icon name="arrow" />
-              </a>
-              <a className="text-button" href="#services">
-                서비스 살펴보기 <span>↗</span>
-              </a>
-            </div>
-            <div className="hero-checks">
-              <span>
-                <Icon name="check" /> 기종별 맞춤 청소
-              </span>
-              <span>
-                <Icon name="check" /> 신규 설치 상담
-              </span>
-              <span>
-                <Icon name="check" /> 작업 전 비용 안내
-              </span>
-            </div>
-          </div>
-          <div className="hero-visual">
-            <Image
-              src="/images/living-room.jpg"
-              alt="햇살이 들어오는 밝고 편안한 거실"
-              fill
-              priority
-              sizes="(max-width: 760px) 100vw, 55vw"
-            />
-            <div className="image-shade" />
-            <div className="photo-label">
-              <span className="status-dot" /> A FRESH START FOR YOUR HOME
-            </div>
-            <div className="air-note">
-              <span className="note-icon">
-                <Icon name="wind" />
-              </span>
-              <div>
-                <strong>바람이 달라지면, 일상이 달라집니다.</strong>
-                <span>에어컨 청소로 시작하는 쾌적한 우리 집</span>
+        <section className="partner-hero">
+          <div className="container hero">
+            <div className="hero-copy">
+              <div className="eyebrow">
+                <span /> AIRCON PARTNER · 에어컨 상담의 시작
               </div>
-              <span className="note-sparkle">✧</span>
+              <h1>
+                에어컨 설치,
+                <br />
+                혼자 알아보지
+                <br />
+                <span>마세요.</span>
+              </h1>
+              <p className="hero-description">
+                복잡한 배관 비용부터 설치 일정까지.
+                <br />
+                우리 집에 필요한 작업, 에어컨파트너와 먼저 확인하세요.
+              </p>
+              <div className="hero-actions">
+                <a className="button" href="#reservation">
+                  우리 집 견적 상담 <Icon name="arrow" />
+                </a>
+                <a className="text-button" href="#process">
+                  어떻게 진행되나요? ↗
+                </a>
+              </div>
+              <div className="hero-checks">
+                <span>
+                  <Icon name="check" /> 현장 조건부터 확인
+                </span>
+                <span>
+                  <Icon name="check" /> 비용 항목 안내
+                </span>
+                <span>
+                  <Icon name="check" /> 일정은 상담 후 협의
+                </span>
+              </div>
             </div>
-            <span className="photo-caption">
-              맑은바람이 생각하는 쾌적한 공간 · 연출 이미지
-            </span>
+            <div className="hero-visual">
+              <Image
+                src="/images/living-room.jpg"
+                alt="에어컨 설치 환경을 고려할 수 있는 밝은 거실 연출 이미지"
+                fill
+                priority
+                sizes="(max-width:760px) 100vw, 50vw"
+              />
+              <div className="image-shade" />
+              <div className="photo-label">YOUR HOME. OUR NEXT QUESTION.</div>
+              <div className="partner-photo-card">
+                <span className="section-kicker">
+                  좋은 견적은, 좋은 질문에서.
+                </span>
+                <h2>어디에 설치하시나요?</h2>
+                <p>공간 · 기종 · 배관 · 실외기 위치</p>
+                <div>
+                  <span>신규 설치</span>
+                  <span>이전 설치</span>
+                  <span>청소</span>
+                </div>
+              </div>
+              <span className="photo-caption">
+                공간 연출 이미지 · 실제 시공사례가 아닙니다
+              </span>
+            </div>
           </div>
         </section>
-        <Booking />
-        <section id="services" className="section container services">
+        <div className="container partner-note">
+          <Icon name="info" />
+          <p>
+            에어컨파트너는 <strong>에어컨 견적·상담 서비스</strong>입니다. 업체
+            연결이 필요한 경우 대상 업체와 전달 정보를 먼저 안내하고 별도 동의를
+            확인합니다.
+          </p>
+        </div>
+        <Booking initialJobType="설치" />
+        <section className="container section" id="services">
           <div className="section-heading">
             <div>
-              <span className="section-kicker">OUR SERVICES</span>
-              <h2>어떤 에어컨을 사용하시나요?</h2>
-              <p>에어컨 종류에 맞는 청소로, 바람부터 달라지도록.</p>
+              <span className="section-kicker">WHAT DO YOU NEED?</span>
+              <h2>지금 필요한 상담을 골라보세요.</h2>
+              <p>새로 설치할 때도, 이사할 때도, 청소가 필요할 때도.</p>
             </div>
-            <span className="heading-note">
-              <Icon name="info" /> 정확한 비용은 기종 확인 후 안내해 드려요
+            <span className="subtle-label">
+              기종과 현장에 따라 상담 내용이 달라집니다
             </span>
           </div>
           <div className="service-grid">
-            {services.map((service, index) => (
-              <article className="service-card" key={service.type}>
-                <div className={`service-art art-${service.type}`}>
-                  <span className="service-tag">{service.tag}</span>
-                  <Aircon type={service.type} />
-                  <span className="art-number">0{index + 1}</span>
+            {options.map((s) => (
+              <article className="service-card" key={s.number}>
+                <div className={`service-art art-${s.type}`}>
+                  <span className="service-tag">{s.tag}</span>
+                  <Aircon type={s.type} />
+                  <span className="art-number">{s.number}</span>
                 </div>
                 <div className="service-body">
-                  <span className="service-label">{service.label}</span>
-                  <h3>{service.name} 청소</h3>
-                  <p>{service.description}</p>
-                  <div className="service-facts">
-                    <span>
-                      <Icon name="clock" /> {service.time}
-                    </span>
-                    <strong>상담 후 요금 안내</strong>
-                  </div>
-                  <a href="#reservation" className="service-link">
-                    이 서비스 상담하기 <Icon name="arrow" />
+                  <span className="service-label">
+                    AIRCON PARTNER / {s.number}
+                  </span>
+                  <h3>{s.name}</h3>
+                  <p>{s.text}</p>
+                  <a className="service-link" href="#reservation">
+                    상담 요청하기 <Icon name="arrow" />
                   </a>
                 </div>
               </article>
             ))}
           </div>
           <p className="service-footnote">
-            작업시간은 1대 기준 예상 시간이며, 모델과 오염 정도에 따라 달라질 수
-            있습니다. 2in1 에어컨은 예약 시 함께 알려주세요.
+            이전 설치는 작업 종류에서 ‘설치’를 선택하고, 전달 사항에
+            철거·이동·재설치 여부를 남겨주세요.
           </p>
         </section>
-        <section id="installation" className="section container services">
-          <div className="section-heading">
+        <section id="estimate" className="partner-estimate">
+          <div className="container estimate-grid">
             <div>
-              <span className="section-kicker">NEW INSTALLATION</span>
-              <h2>새 에어컨, 안전하게 설치해 드려요</h2>
-              <p>신규 구매나 이전 설치도 기종에 맞춰 상담합니다.</p>
-            </div>
-            <span className="heading-note">
-              <Icon name="info" /> 정확한 비용은 현장 확인 후 안내해 드려요
-            </span>
-          </div>
-          <div className="service-grid">
-            {installServices.map((service, index) => (
-              <article className="service-card" key={service.type}>
-                <div className={`service-art art-${service.type}`}>
-                  <span className="service-tag">{service.tag}</span>
-                  <Aircon type={service.type} />
-                  <span className="art-number">0{index + 1}</span>
-                </div>
-                <div className="service-body">
-                  <span className="service-label">{service.label}</span>
-                  <h3>{service.name} 설치</h3>
-                  <p>{service.description}</p>
-                  <div className="service-facts">
-                    <span>
-                      <Icon name="clock" /> {service.time}
-                    </span>
-                    <strong>상담 후 요금 안내</strong>
-                  </div>
-                  <a href="#reservation" className="service-link">
-                    이 서비스 상담하기 <Icon name="arrow" />
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-          <p className="service-footnote">
-            설치 비용은 배관 길이, 실외기 위치, 전기 공사 여부에 따라 달라집니다.
-            예약 시 작업 종류에서 설치를 선택해 주세요.
-          </p>
-        </section>
-        <section className="promise-section">
-          <div className="container promise-inner">
-            <div>
-              <span className="section-kicker">THE CLEAR AIR WAY</span>
+              <span className="section-kicker">BEFORE THE ESTIMATE</span>
               <h2>
-                맡기는 마음까지,
+                설치비는 숫자 하나보다,
                 <br />
-                편안할 수 있도록.
+                <span>포함된 항목이 중요하니까.</span>
               </h2>
-            </div>
-            <div className="promise-item">
-              <Icon name="shield" />
-              <h3>시작 전에 충분히 설명해요</h3>
               <p>
-                제품 상태와 작업 범위, 비용을
+                정확한 금액은 제품과 현장 확인 후 안내합니다.
                 <br />
-                확인하고 청소를 시작합니다.
+                상담할 때 이 네 가지를 함께 확인해 보세요.
               </p>
+              <a href="#reservation" className="text-button">
+                설치 조건 남기기 →
+              </a>
             </div>
-            <div className="promise-item">
-              <Icon name="drop" />
-              <h3>공간도 소중하게 다뤄요</h3>
-              <p>
-                주변 가구와 바닥을 보양하고
-                <br />
-                청소 후 주변까지 정리합니다.
-              </p>
-            </div>
-            <div className="promise-item">
-              <Icon name="check-circle" />
-              <h3>마지막 바람까지 확인해요</h3>
-              <p>
-                세척 후 재조립과 작동 점검으로
-                <br />
-                마무리 상태를 함께 확인합니다.
-              </p>
+            <div className="estimate-checks">
+              {[
+                [
+                  "01",
+                  "기본 작업 범위",
+                  "제품 기종, 설치 대수와 기본 설치에 포함되는 작업",
+                ],
+                [
+                  "02",
+                  "배관 · 전기 · 배수",
+                  "배관 길이, 타공, 전기 작업 등 추가 작업 필요 여부",
+                ],
+                [
+                  "03",
+                  "실외기 설치 환경",
+                  "실외기 위치, 거치대와 고소 작업 필요 여부",
+                ],
+                [
+                  "04",
+                  "철거 · 이동 · 재설치",
+                  "이전 설치 시 철거 장소, 이동 거리와 재설치 조건",
+                ],
+              ].map(([n, t, d]) => (
+                <div key={n}>
+                  <span>{n}</span>
+                  <section>
+                    <h3>{t}</h3>
+                    <p>{d}</p>
+                  </section>
+                  <Icon name="check" />
+                </div>
+              ))}
             </div>
           </div>
         </section>
-        <section className="section container" id="process">
+        <section className="container section" id="process">
           <div className="section-heading">
             <div>
-              <span className="section-kicker">HOW WE CARE</span>
-              <h2>깨끗한 바람을 만드는 과정</h2>
-              <p>보이는 곳부터 보이지 않는 곳까지, 순서대로 꼼꼼하게.</p>
+              <span className="section-kicker">SIMPLE, STEP BY STEP</span>
+              <h2>상담부터 진행 결정까지, 차근차근.</h2>
+              <p>요청서를 보낸 것만으로 계약이나 방문이 확정되지 않습니다.</p>
             </div>
-            <span className="subtle-label">기종과 현장에 맞춰 진행합니다</span>
           </div>
           <div className="process-grid">
             {[
-              [
-                "01",
-                "상태 확인 · 주변 보양",
-                "작동 상태를 점검하고 가구와 바닥을 보호합니다.",
-                "shield",
-              ],
+              ["01", "상담 요청", "지역·기종·희망일과 연락처를 남겨주세요."],
               [
                 "02",
-                "분해 · 내부 세척",
-                "모델별 분해 범위에 맞춰 필터와 내부를 세척합니다.",
-                "drop",
+                "설치 조건 확인",
+                "주소와 제품, 배관·실외기 환경을 확인합니다.",
               ],
               [
                 "03",
-                "건조 · 재조립",
-                "세척한 부품을 건조하고 제자리에 조립합니다.",
-                "wind",
+                "진행 가능 여부 안내",
+                "업체 연결이 필요하면 대상과 전달 정보를 먼저 안내합니다.",
               ],
               [
                 "04",
-                "작동 점검 · 정리",
-                "정상 작동을 확인하고 관리 방법을 안내합니다.",
-                "check-circle",
+                "견적 · 일정 협의",
+                "상담 후 비용과 일정에 동의하시면 진행을 결정합니다.",
               ],
-            ].map(([number, title, desc, icon]) => (
-              <div className="process-item" key={number}>
+            ].map(([n, t, d]) => (
+              <article className="process-item" key={n}>
                 <div className="process-top">
-                  <span>{number}</span>
-                  <Icon name={icon} />
+                  <span>{n}</span>
+                  <Icon name="arrow" />
                 </div>
-                <h3>{title}</h3>
-                <p>{desc}</p>
-              </div>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </article>
             ))}
           </div>
         </section>
-        <section id="areas" className="container area-section">
-          <div className="area-copy">
-            <span className="section-kicker">ALWAYS NEAR YOU</span>
-            <h2>
-              멀지 않은 곳에서,
-              <br />
-              깨끗한 바람을 전합니다.
-            </h2>
-            <p>
-              동작구를 거점으로 서울 전체와 경기 전체를 방문합니다.
-              <br />
-              방문 일정은 주소와 작업 내용을 확인한 후 안내해 드려요.
-            </p>
-            <a href="#reservation" className="text-button">
-              우리 동네 방문 상담하기 <Icon name="arrow" />
-            </a>
-          </div>
-          <div className="area-list">
-            <div className="area-group">
-              <span className="area-category">
-                <Icon name="pin" /> 서울
-              </span>
-              <div>
-                {regions
-                  .filter((r) => r.province === "서울")
-                  .map((r) => (
-                    <span
-                      className={
-                        r.name === "동작구"
-                          ? "area-chip home-area"
-                          : "area-chip"
-                      }
-                      key={r.slug}
-                    >
-                      {r.name}
-                      {r.name === "동작구" && <small>거점</small>}
-                    </span>
-                  ))}
-              </div>
+        <section id="areas" className="container partner-area">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">NEAR YOUR HOME</span>
+              <h2>우리 동네부터 찾아보세요.</h2>
+              <p>
+                지역 안내를 확인하고 문의하세요. 실제 대응 가능 여부는 상담 후
+                안내합니다.
+              </p>
             </div>
-            <div className="area-group">
-              <span className="area-category">
-                <Icon name="pin" /> 경기
-              </span>
-              <div>
-                {regions
-                  .filter((r) => r.province === "경기")
-                  .map((r) => (
-                    <span className="area-chip" key={r.slug}>
-                      {r.name}
-                    </span>
-                  ))}
-              </div>
-            </div>
-            <p>
-              <Icon name="info" /> 인근 지역은 상담을 통해 방문 가능 여부를
-              확인해 주세요.
-            </p>
           </div>
-        </section>
-        <section className="container section">
           <RegionSearch />
         </section>
-        <section id="faq" className="section container faq-section">
+        <section id="faq" className="container section faq-section">
           <div>
             <span className="section-kicker">GOOD TO KNOW</span>
-            <h2>궁금한 점이 있으신가요?</h2>
-            <p>예약 전에 많이 궁금해하시는 내용을 모았어요.</p>
-            <span className="faq-decoration">
-              <Icon name="wind" />
-            </span>
+            <h2>
+              문의하기 전,
+              <br />
+              궁금하실 내용들.
+            </h2>
+            <p>가능한 것과 확인이 필요한 것을 구분해 안내합니다.</p>
           </div>
           <div className="faq-list">
             {[
               [
-                "에어컨 청소 비용은 어떻게 정해지나요?",
-                "벽걸이·스탠드·시스템 등 기종과 대수, 모델, 설치 환경에 따라 달라집니다. 상담 시 모델과 현장 정보를 확인한 뒤 작업 범위와 비용을 안내합니다.",
+                "직접 시공하는 업체인가요?",
+                "에어컨파트너는 에어컨 견적·상담 서비스입니다. 요청 내용과 진행 가능 여부를 확인하며, 시공업체 연결이 필요하면 대상 업체와 전달 정보를 먼저 안내합니다. 상담 신청만으로 제3자에게 개인정보를 자동 전달하지 않습니다.",
               ],
               [
-                "예약하면 바로 방문 일정이 확정되나요?",
-                "희망 날짜를 남겨주시면 방문 가능 여부를 확인하고 일정을 조율하는 방식입니다. 온라인 신청은 접수 대기 상태로 저장되며, 담당자가 연락해 비용과 일정을 확인한 뒤 확정합니다.",
+                "설치 비용을 미리 알 수 있나요?",
+                "기종, 배관 길이, 실외기 위치와 추가 작업 여부에 따라 달라집니다. 기본 작업과 추가 비용 항목을 확인한 후 견적을 안내하며, 현장 확인 없이 확정 금액을 약속하지 않습니다.",
               ],
               [
-                "청소 전에 미리 준비할 것이 있나요?",
-                "에어컨 주변의 작은 물건을 치워주시고 물을 사용할 수 있는 장소를 확인해 주세요. 주차 가능 여부, 높은 천장이나 좁은 설치 공간도 미리 알려주시면 도움이 됩니다.",
+                "중고 에어컨이나 이전 설치도 문의할 수 있나요?",
+                "가능 여부를 상담할 수 있습니다. 작업 종류는 ‘설치’를 선택하고 모델명, 제품 상태, 철거할 곳과 다시 설치할 곳을 전달 사항에 남겨주세요.",
               ],
               [
-                "에어컨 설치도 신청할 수 있나요?",
-                "네, 벽걸이·스탠드·시스템 에어컨 신규 설치 상담을 받습니다. 예약 시 작업 종류에서 설치를 선택해 주시면 현장 조건을 확인한 뒤 일정과 비용을 안내합니다. 기존 제품 철거 후 이전 설치가 필요한 경우도 함께 남겨주세요.",
+                "요청하면 바로 설치 일정이 잡히나요?",
+                "요청은 접수 대기로 저장됩니다. 담당자가 지역과 작업 조건을 확인한 뒤 진행 가능 여부와 일정을 안내합니다. 접수번호를 보관해 주세요.",
               ],
-            ].map(([question, answer]) => (
-              <details key={question}>
+            ].map(([q, a]) => (
+              <details key={q}>
                 <summary>
-                  {question}
+                  {q}
                   <span>+</span>
                 </summary>
-                <p>{answer}</p>
+                <p>{a}</p>
               </details>
             ))}
           </div>
         </section>
         <section className="container closing">
           <div>
-            <span>새로운 계절을 준비하는 가장 산뜻한 방법</span>
-            <h2>깨끗한 바람, 지금부터 준비하세요.</h2>
+            <span>에어컨에 관한 다음 질문, 여기서 시작하세요.</span>
+            <h2>우리 집 에어컨의 든든한 파트너.</h2>
           </div>
           <a className="button" href="#reservation">
-            청소·설치 예약 상담하기 <Icon name="arrow" />
+            견적 상담 요청하기 <Icon name="arrow" />
           </a>
         </section>
       </main>
-      <footer className="footer container">
-        <div className="footer-links">
-          <Link href="/aircon-cleaning">지역별 에어컨 청소·설치</Link>
-          <Link href="/privacy">개인정보 처리 안내</Link>
-        </div>
+      <footer className="container footer">
         <div className="footer-top">
-          <a className="brand" href="#">
-            <span className="brand-symbol">
-              <Icon name="wind" />
+          <Link href="/" className="brand">
+            <span className="partner-mark">
+              ap<span>·</span>
             </span>
-            맑은바람
-          </a>
-          <span>공간을 맑게, 일상을 가볍게.</span>
-          <a href="#reservation">
-            예약 상담 <span>↗</span>
-          </a>
+            에어컨파트너
+          </Link>
+          <span>설치 · 이전 · 청소 상담</span>
+          <Link href="/privacy">개인정보 처리 안내 ↗</Link>
         </div>
         <div className="footer-bottom">
           <p>
-            서울 전체 · 경기 전체 에어컨 청소·설치
+            에어컨 견적·상담 서비스 · 진행 가능 여부 및 일정은 상담 후 안내
             <br />
-            <span>온라인 예약 접수 · 방문 일정은 상담 후 확정됩니다.</span>
+            업체 연결 시 전달 대상과 목적을 안내하고 별도 동의를 확인합니다.
           </p>
-          <span>
-            © {new Date().getFullYear()} 맑은바람. All rights reserved.
-          </span>
+          <span>© {new Date().getFullYear()} AIRCON PARTNER</span>
         </div>
       </footer>
     </>

@@ -12,14 +12,16 @@ import {
 import { Icon } from "./icons";
 export default function Booking({
   initialArea = "",
+  initialJobType = "청소",
 }: {
   initialArea?: string;
+  initialJobType?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
     form = useRef<HTMLFormElement>(null);
   const requestId = useRef("");
   const [dateBounds, setDateBounds] = useState({ min: "", max: "" });
-  const [jobType, setJobType] = useState(jobTypes[0]),
+  const [jobType, setJobType] = useState(initialJobType),
     [service, setService] = useState(services[0]),
     [area, setArea] = useState(initialArea),
     [date, setDate] = useState("");
@@ -94,8 +96,10 @@ export default function Booking({
               <Icon name="calendar" />
             </span>
             <div>
-              <h2 id="booking-title">우리 집 에어컨, 청소부터 설치까지</h2>
-              <p>희망 일정을 남기면 상담 후 방문을 확정합니다.</p>
+              <h2 id="booking-title">어떤 에어컨 상담이 필요하세요?</h2>
+              <p>
+                요청 내용을 확인하고 진행 가능 여부와 견적 절차를 안내합니다.
+              </p>
             </div>
             <span className="preview-badge">온라인 예약 접수</span>
           </div>

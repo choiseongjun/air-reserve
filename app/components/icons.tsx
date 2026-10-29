@@ -111,7 +111,7 @@ export function Aircon({ type }: { type: "wall" | "standing" | "ceiling" }) {
           <path d="M60 62h200" stroke="white" strokeWidth="3" />
           <circle cx="254" cy="92" r="2" fill="#0b9f85" />
           <text x="151" y="83" fontSize="5" fill="#9baea8" letterSpacing="1">
-            CLEAR AIR
+            AIRCON PARTNER
           </text>
           <path
             d="M111 140v9m49-9v17m49-17v9"
