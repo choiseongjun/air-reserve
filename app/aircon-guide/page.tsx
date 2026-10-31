@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SubHeader from "@/app/components/sub-header";
+import Booking from "@/app/components/booking";
 import { pageMetadata } from "@/lib/seo";
 import { searchGuides } from "@/lib/search-guides";
 import styles from "./guide.module.css";
@@ -20,5 +21,6 @@ export default function GuideIndex() {
     <div className="container section"><div className={styles.grid}>{searchGuides.map(g =>
       <Link className={styles.card} key={g.slug} href={`/aircon-guide/${g.slug}`}><span className={styles.category}>{g.category}</span><h2>{g.title}</h2><p>{g.description}</p><span>자세히 확인하기 →</span></Link>
     )}</div></div>
+    <Booking />
   </main></>;
 }
