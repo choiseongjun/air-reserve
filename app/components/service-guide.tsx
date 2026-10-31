@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SearchGuideLinks from "./search-guide-links";
 import Booking from "./booking";
 import SubHeader from "./sub-header";
 import RegionSearch from "./region-search";
@@ -121,6 +122,7 @@ export default function ServiceGuide({
           </p>
           <RegionSearch />
         </section>
+        <SearchGuideLinks job={kind === "relocation" ? "이전설치" : guide.jobType} />
         <Booking
           initialJobType={guide.jobType}
           initialNotes={

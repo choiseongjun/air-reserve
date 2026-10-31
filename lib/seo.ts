@@ -21,7 +21,7 @@ export function pageMetadata(
             "max-snippet": -1,
             "max-video-preview": -1,
           },
-    alternates: { canonical: url },
+    alternates: { canonical: url, types: { "application/rss+xml": `${siteUrl}/feed.xml` } },
     openGraph: {
       title,
       description,

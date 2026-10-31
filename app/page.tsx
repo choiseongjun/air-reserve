@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import SearchGuideLinks from "./components/search-guide-links";
 import Booking from "./components/booking";
 import RegionSearch from "./components/region-search";
 import { Aircon, Icon } from "./components/icons";
@@ -157,6 +158,7 @@ export default function Home() {
             동의를 확인합니다.
           </p>
         </div>
+        <SearchGuideLinks />
         <Booking initialJobType="설치" />
         <section className="container section" id="services">
           <div className="section-heading">
