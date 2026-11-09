@@ -2,6 +2,8 @@ import { validateBooking } from "@/lib/booking-validation";
 import { createBooking, BookingError } from "@/lib/bookings";
 import { readJson, sameOrigin } from "@/lib/request";
 import { validatePhotos } from "@/lib/booking-photos";
+import { after } from "next/server";
+import { sendInquiryNotification } from "@/lib/telegram";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
   if (!sameOrigin(request))
@@ -33,6 +35,11 @@ export async function POST(request: Request) {
   }
   try {
     const result = await createBooking(input, photos);
+    if (!result.duplicate) {
+      after(async () => {
+        await sendInquiryNotification({ id: result.id, area: input.area, jobType: input.jobType, date: input.date, source: input.source, photoCount: photos.length });
+      });
+    }
     return Response.json(
       { id: result.id, status: "pending" },
       {
